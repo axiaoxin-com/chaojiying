@@ -48,6 +48,10 @@ type Client struct {
 // 传入所有可用账号备用
 func New(accounts []Account) (*Client, error) {
 	c := &Client{}
+	// accounts 传nil则不添加账号
+	if accounts == nil {
+		return c, nil
+	}
 	// 过滤不可用账号
 	avaliableAccounts := []Account{}
 	for _, account := range accounts {
@@ -78,7 +82,7 @@ func (c *Client) PickOneAccount() (Account, error) {
 		account = c.accounts[i]
 		// 验证账号是否可用,可用直接返回，不可用则选择下一个
 		resp, err := c.GetScore(account.User, account.Pass)
-		if err == nil && resp.Tifen > 0 {
+		if err == nil && resp.Tifen >= 10 { // 最少需要10题分
 			return account, nil
 		}
 	}

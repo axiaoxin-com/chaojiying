@@ -1,4 +1,4 @@
-module github.com/axiaoxin/chaojiying
+module github.com/axiaoxin-com/chaojiying
 
 go 1.13
 

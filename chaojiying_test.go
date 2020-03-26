@@ -20,7 +20,7 @@ func TestAndDumpAccountsJSON(t *testing.T) {
 	}
 	/*
 		// 测试破解
-		pic, err := os.Open("./pin.png")
+		pic, err := os.Open("./example/pin.png")
 		if err != nil {
 			t.Error(err)
 		}
