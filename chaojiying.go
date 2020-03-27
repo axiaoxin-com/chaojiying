@@ -90,27 +90,32 @@ func (c *Client) PickOneAccount() (Account, error) {
 }
 
 // GetScore 超级鹰GetScore接口
-/*
-接口说明:查询用户的题分信息
-接口网址:http://upload.chaojiying.net/Upload/GetScore.php
-POST发送模式：application/x-www-form-urlencoded, multipart/form-data, application/json
-返回格式:json
-返回编码:utf-8
-返回汉字编码:Unicode
-
-发送说明:
-user=用户账号
-pass=用户密码 //或 pass2=用户密码的md5值(32位小写)
-
-返回说明:
-err_no,(数值) 返回代码
-err_str,(字符串) 中文描述的返回信息
-tifen,(数值) 题分
-tifen_lock,(数值) 锁定题分
-
-返回json字符串示例:{"err_no":0,"err_str":"OK","tifen":821690,"tifen_lock":0}
-*/
 func (c *Client) GetScore(user, pass string) (*GetScoreResp, error) {
+	/* 接口说明:查询用户的题分信息
+
+	   接口网址:http://upload.chaojiying.net/Upload/GetScore.php
+
+	   POST发送模式：application/x-www-form-urlencoded, multipart/form-data, application/json
+
+	   返回格式:json
+
+	   返回编码:utf-8
+
+	   返回汉字编码:Unicode
+
+	   发送说明:
+	   user=用户账号
+	   pass=用户密码 或 pass2=用户密码的md5值(32位小写)
+
+	   返回说明:
+	   err_no(数值) 返回代码;
+	   err_str(字符串) 中文描述的返回信息;
+	   tifen(数值) 题分;
+	   tifen_lock(数值) 锁定题分
+
+	   返回json字符串示例:
+	   {"err_no":0, "err_str":"OK", "tifen":821690, "tifen_lock":0}
+	*/
 	apiURL := "http://upload.chaojiying.net/Upload/GetScore.php"
 	data := url.Values{
 		"user": {user},
@@ -140,33 +145,33 @@ func (c *Client) GetScore(user, pass string) (*GetScoreResp, error) {
 }
 
 // Processing 超级鹰验证码识别接口
-/*
-接口说明:识别核心接口，一步识别，发送图片和其他相关信息给服务器，服务器返回识别结果和一些其他信息 POST
-接口网址:http://upload.chaojiying.net/Upload/Processing.php
-
-发送说明:
-user=用户账号
-pass=用户密码 //或 pass2=用户密码的md5值(32位小写)
-softid=软件ID  在用户中心，软件ID处可以生成
-codetype=验证码类型   在价格体系中选用一个适合的类型 点击这里进入
-len_min=最小位数 //默认0为不启用,图片类型为可变位长时可启用这个参数
-
-以下两个参数选其一  图片文件的宽推荐不超过460px,高不超过310px
-
-userfile=图片文件二进制流(或是称之为内存流,文件流,字节流的概念)
-file_base64=图片文件base64字符串
-
-返回说明:
-err_no,(数值) 返回代码
-err_str,(字符串) 中文描述的返回信息
-pic_id,(字符串) 图片标识号，或图片id号
-pic_str,(字符串) 识别出的结果
-md5,(字符串) md5校验值,用来校验此条数据返回是否真实有效 点击这里查看md5校验算法
-
-返回json字符串示例:{"err_no":0,"err_str":"OK","pic_id":"1662228516102","pic_str":"8vka","md5":"35d5c7f6f53223fbdc5b72783db0c2c0"}
-推荐逻辑处理流程：if (err_no == 0) {识别结果 = pic_str} else {错误代码 = err_no}
-*/
 func (c *Client) Processing(user, pass string, pic io.Reader) (*ProcessingResp, error) {
+	/*
+		接口说明:识别核心接口，一步识别，发送图片和其他相关信息给服务器，服务器返回识别结果和一些其他信息 POST
+		接口网址:http://upload.chaojiying.net/Upload/Processing.php
+
+		发送说明:
+		user=用户账号
+		pass=用户密码 //或 pass2=用户密码的md5值(32位小写)
+		softid=软件ID  在用户中心，软件ID处可以生成
+		codetype=验证码类型   在价格体系中选用一个适合的类型 点击这里进入
+		len_min=最小位数 //默认0为不启用,图片类型为可变位长时可启用这个参数
+
+		以下两个参数选其一  图片文件的宽推荐不超过460px,高不超过310px
+
+		userfile=图片文件二进制流(或是称之为内存流,文件流,字节流的概念)
+		file_base64=图片文件base64字符串
+
+		返回说明:
+		err_no,(数值) 返回代码
+		err_str,(字符串) 中文描述的返回信息
+		pic_id,(字符串) 图片标识号，或图片id号
+		pic_str,(字符串) 识别出的结果
+		md5,(字符串) md5校验值,用来校验此条数据返回是否真实有效 点击这里查看md5校验算法
+
+		返回json字符串示例:{"err_no":0,"err_str":"OK","pic_id":"1662228516102","pic_str":"8vka","md5":"35d5c7f6f53223fbdc5b72783db0c2c0"}
+		推荐逻辑处理流程：if (err_no == 0) {识别结果 = pic_str} else {错误代码 = err_no}
+	*/
 	apiURL := "http://upload.chaojiying.net/Upload/Processing.php"
 	picContent, err := ioutil.ReadAll(pic)
 	if err != nil {
@@ -224,14 +229,8 @@ func (c *Client) Cr4ck(pic io.Reader) (string, error) {
 }
 
 // LoadAccountsFromJSONFile 从指定位置的json文件中加载账号
-/* json格式
-[
-	{
-		"user": "",
-		"pass": ""
-	}
-]
-*/
+//
+// json格式: [{"user": "", "pass": ""}, ...]
 func LoadAccountsFromJSONFile(filePath string) ([]Account, error) {
 	b, err := ioutil.ReadFile(filePath)
 	if err != nil {

@@ -25,6 +25,9 @@
 go get -u github.com/axiaoxin-com/chaojiying
 ```
 
+## 在线文档
+
+<https://pkg.go.dev/github.com/axiaoxin-com/chaojiying?tab=doc>
 
 ## 用法示例
 
