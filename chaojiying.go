@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/axiaoxin-com/logging"
 
 	"github.com/pkg/errors"
 )
@@ -57,12 +58,12 @@ func New(accounts []Account) (*Client, error) {
 	for _, account := range accounts {
 		resp, err := c.GetScore(account.User, account.Pass)
 		if err != nil {
-			log.Println("[ERROR] chaojiying New GetScore error. user:", account.User, "pass:", account.Pass, "error:", err, "resp:", resp)
+			logging.Errorw(nil, "chaojiying New GetScore error", "user", account.User, "pass", account.Pass, "error", err, "resp", resp)
 			continue
 		}
 		account.Score = resp.Tifen
 		avaliableAccounts = append(avaliableAccounts, account)
-		log.Println("[DEBUG] chaojiying New add account:", account)
+		logging.Debugs(nil, "chaojiying New add account:", account)
 	}
 	if len(avaliableAccounts) == 0 {
 		return nil, errors.New("No avaliable accounts")
@@ -210,7 +211,7 @@ func (c *Client) Processing(user, pass string, pic io.Reader) (*ProcessingResp, 
 // 封装Proccessing接口，判断是否成功，成功返回破解出的验证码
 func (c *Client) Cr4ck(pic io.Reader) (string, error) {
 	account, err := c.PickOneAccount()
-	log.Println("[INFO] chaojiying Cr4ck picked account:", account)
+	logging.Infos(nil, "chaojiying Cr4ck picked account:", account)
 	if err != nil {
 		return "", errors.Wrap(err, "chaojiying Cr4ck PickOneAccount error")
 	}
@@ -224,7 +225,7 @@ func (c *Client) Cr4ck(pic io.Reader) (string, error) {
 	if resp.PicStr == "" {
 		return "", errors.New("chaojiying can't Cr4ck this pic")
 	}
-	log.Println("[INFO] chaojiying Cr4ck result:", resp)
+	logging.Infos(nil, "chaojiying Cr4ck result:", resp)
 	return resp.PicStr, nil
 }
 
