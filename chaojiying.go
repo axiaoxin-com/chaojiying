@@ -42,13 +42,18 @@ type Account struct {
 
 // Client 超级鹰客户端结构体对象
 type Client struct {
-	accounts []Account
+	accounts   []Account
+	httpClient *http.Client
 }
 
 // New 创建超级鹰Client对象
 // 传入所有可用账号备用
 func New(accounts []Account) (*Client, error) {
-	c := &Client{}
+	c := &Client{
+		httpClient: &http.Client{
+			Timeout: 30 * time.Second,
+		},
+	}
 	// accounts 传nil则不添加账号
 	if accounts == nil {
 		return c, nil
@@ -123,7 +128,7 @@ func (c *Client) GetScore(user, pass string) (*GetScoreResp, error) {
 		"pass": {pass},
 	}
 	r := &GetScoreResp{}
-	resp, err := http.PostForm(apiURL, data)
+	resp, err := c.httpClient.PostForm(apiURL, data)
 	if err != nil {
 		return r, errors.Wrap(err, "chaojiying GetScore PostForm error")
 	}
@@ -187,7 +192,7 @@ func (c *Client) Processing(user, pass string, pic io.Reader) (*ProcessingResp, 
 		"len_min":     {"0"},
 		"file_base64": {b64},
 	}
-	resp, err := http.PostForm(apiURL, data)
+	resp, err := c.httpClient.PostForm(apiURL, data)
 	if err != nil {
 		return nil, errors.Wrap(err, "chaojiying Processing PostForm error")
 	}
