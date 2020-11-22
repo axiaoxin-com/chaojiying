@@ -15,7 +15,7 @@ func Example_randAccount() {
 	// 破解验证码时随机选择其中一个可用账号进行调用
 
 	// 加载账号json信息
-	jsonFilename := "../personal-data/chaojiying_accounts.json"
+	jsonFilename := "../../axiaoxin/personal-data/chaojiying_accounts.json"
 	accounts, err := chaojiying.LoadAccountsFromJSONFile(jsonFilename)
 	if err != nil {
 		log.Fatal(err)

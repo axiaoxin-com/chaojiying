@@ -8,7 +8,7 @@ import (
 
 func TestAndDumpAccountsJSON(t *testing.T) {
 	// 加载账号信息
-	jsonFilename := "../personal-data/chaojiying_accounts.json"
+	jsonFilename := "../../axiaoxin/personal-data/chaojiying_accounts.json"
 	accounts, err := LoadAccountsFromJSONFile(jsonFilename)
 	if err != nil {
 		t.Error(err)
