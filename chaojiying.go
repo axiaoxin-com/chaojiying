@@ -234,6 +234,10 @@ func (c *Client) Cr4ck(pic io.Reader) (string, error) {
 	return resp.PicStr, nil
 }
 
+func (c *Client) Accounts() []Account {
+	return c.accounts
+}
+
 // LoadAccountsFromJSONFile 从指定位置的json文件中加载账号
 //
 // json格式: [{"user": "", "pass": ""}, ...]
